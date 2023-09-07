@@ -4,11 +4,18 @@
 
 Use this GitHub action to authenticate into your Shipyard ephemeral environments via a bypass token and run jobs on them.
 
-This job connects with Shipyard during a [GitHub Actions](https://docs.github.com/en/actions) job, fetching necessary environment variables in order to run E2E tests where authentication via OAuth is normally required.
+This job connects to Shipyard during a [GitHub Actions](https://docs.github.com/en/actions) job, fetching necessary environment variables in order to run E2E tests where authentication via OAuth is normally required.
+
+## Setup
+- Obtain your API token from your Shipyard **Org Settings** page
+  
+  <img src="https://docs.shipyard.build/img/screenshots/Shipyard-API-Token.png" width="500px">
+- Create a new GitHub repository secret named `SHIPYARD_API_TOKEN`
+- Open a PR on your Shipyard-enabled app
 
 ## How to use
 
-In your GitHub workflow file located in `.github/workflows/`, you can use the Shipyard GitHub Action as per the following example:
+In your GitHub workflow file located in `.github/workflows/`, you can use the **Shipyard GitHub Action** as per the following example:
 
 ```
 on: [pull_request]
@@ -21,10 +28,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Fetch Shipyard Tokens
-        uses: shipyard/shipyard-action/@1.0.0
+        uses: shipyard/shipyard-action@1.0.0
         env:
           SHIPYARD_API_TOKEN: ${{ secrets.SHIPYARD_API_TOKEN }}
-      - name: Run the E2E tests on the ephemeral environment
+      - name: Run E2E tests on the ephemeral environment
         run: npm run test
         shell: bash
         env:
@@ -33,7 +40,7 @@ jobs:
         
 ```
 
-The Github Action can be configured by passing inputs or environment variables:
+This action can be configured by passing inputs or environment variables:
 
 **Inputs**
 ```
@@ -71,7 +78,7 @@ The Github Action can be configured by passing inputs or environment variables:
 
 If input `api-token` or environment variable `SHIPYARD_API_TOKEN` is not provided, error is raised.
 
-On successful run, the following environment variables are set, which can then be passed on to other actions in the same workflow.
+On a successful run, the following environment variables are set, which can then be passed on to other actions in the same workflow:
 
 | Parameter Name | Description |
 | --------------- | --------------- |
