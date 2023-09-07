@@ -1,4 +1,4 @@
-name: Shipyard
+name: Fetch Shipyard Env Vars
 description: Use this action to run jobs on your Shipyard ephemeral environments.
 inputs:
   api-token:
@@ -28,7 +28,7 @@ runs:
           echo "INPUT_TIMEOUT_MINUTES=${{ inputs.timeout-minutes }}" >> $GITHUB_ENV
           echo "INPUT_APP_NAME=${{ inputs.app-name }}" >> $GITHUB_ENV
       shell: bash
-    - name: Fetch the Shipyard environment variables
+    - name: Fetch Shipyard environment variables
       run: python $GITHUB_ACTION_PATH/src/fetch_shipyard_env.py 
       shell: bash
 branding:
