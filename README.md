@@ -4,7 +4,7 @@
 
 Securely authenticate into [Shipyard](https://shipyard.build)-generated environments to test before merge by running E2E tests against an ephemeral environment on every commit.
 
-This action connects to Shipyard using your **API Token** and fetches the environment variables necessary to test against your existing environments within your [GitHub Actions](https://docs.github.com/en/actions) workflow. 
+This action connects to Shipyard using your **API token** and fetches the environment variables necessary to test against your existing environments within your [GitHub Actions](https://docs.github.com/en/actions) workflow. 
 
 ## Setup
 - Obtain your API token from your Shipyard **Org Settings** page
@@ -23,7 +23,7 @@ on: [pull_request]
 jobs:
   cypress-e2e-tests:
     runs-on: ubuntu-latest
-    name: Collect the bypass token and URL for an authenticated ephemeral environment attached to this PR
+    name: Auth into Shipyard and run Cypress E2E tests against ephemeral environments
     steps:
       - name: Checkout
         uses: actions/checkout@v3
