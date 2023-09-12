@@ -1,10 +1,10 @@
-# Shipyard GitHub Action
+# Integrate Shipyard
 
 [![GitHub License](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://raw.githubusercontent.com/shipyard/github-action/master/LICENSE) [![Github Action Community](https://img.shields.io/badge/community-Github%20Actions%20Discuss-343434.svg)](https://github.community/c/github-ecosystem/github-apps/64)
 
-Use this GitHub action to authenticate into your Shipyard ephemeral environments via a bypass token and run jobs on them.
+Securely authenticate into [Shipyard](https://shipyard.build)-generated environments to test before merge by running E2E tests against an ephemeral environment on every commit.
 
-This job connects to Shipyard during a [GitHub Actions](https://docs.github.com/en/actions) job, fetching necessary environment variables in order to run E2E tests where authentication via OAuth is normally required.
+This action connects to Shipyard using your **API token** and fetches the environment variables necessary to test against your existing environments within your [GitHub Actions](https://docs.github.com/en/actions) workflow. 
 
 ## Setup
 - Obtain your API token from your Shipyard **Org Settings** page
@@ -23,15 +23,15 @@ on: [pull_request]
 jobs:
   cypress-e2e-tests:
     runs-on: ubuntu-latest
-    name: Collect the bypass token and URL for an authenticated ephemeral environment attached to this PR
+    name: Auth into Shipyard and run Cypress E2E tests against ephemeral environments
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Fetch Shipyard Tokens
+      - name: Integrate Shipyard
         uses: shipyard/shipyard-action@1.0.0
         env:
           SHIPYARD_API_TOKEN: ${{ secrets.SHIPYARD_API_TOKEN }}
-      - name: Run E2E tests on the ephemeral environment
+      - name: Run E2E tests against the ephemeral environment
         run: npm run test
         shell: bash
         env:
@@ -44,7 +44,7 @@ This action can be configured by passing inputs or environment variables:
 
 **Inputs**
 ```
-  - name: Fetch Shipyard Tokens
+  - name: Integrate Shipyard
     uses: shipyard/shipyard-action@1.0.0
     with:
         api-token: ${{ secrets.SHIPYARD_API_TOKEN }}
@@ -60,7 +60,7 @@ This action can be configured by passing inputs or environment variables:
 
 **Environment Variables**
 ```
-  - name: Fetch Shipyard Tokens
+  - name: Integrate Shipyard
     uses: shipyard/shipyard-action@1.0.0
     env:
       SHIPYARD_API_TOKEN: ${{ secrets.SHIPYARD_API_TOKEN }}
