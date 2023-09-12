@@ -1,5 +1,5 @@
-name: Fetch Shipyard Env Vars
-description: Use this action to run jobs on your Shipyard ephemeral environments.
+name: Integrate Shipyard
+description: Securely auth into Shipyard-generated environments so you can test before merge.
 inputs:
   api-token:
     description: Shipyard API token used to fetch necessary environment variables from Shipyard.
@@ -28,7 +28,7 @@ runs:
           echo "INPUT_TIMEOUT_MINUTES=${{ inputs.timeout-minutes }}" >> $GITHUB_ENV
           echo "INPUT_APP_NAME=${{ inputs.app-name }}" >> $GITHUB_ENV
       shell: bash
-    - name: Fetch Shipyard environment variables
+    - name: Authenticate into Shipyard
       run: python $GITHUB_ACTION_PATH/src/fetch_shipyard_env.py 
       shell: bash
 branding:
