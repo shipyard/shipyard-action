@@ -162,7 +162,6 @@ def wait_for_environment():
 
         # Check on the environment again
         environment_id, environment_data = fetch_shipyard_environment()
-
     return environment_id, environment_data
 
 
@@ -173,7 +172,7 @@ def main():
     """
 
     environment_id, environment_data = wait_for_environment()
-
+    
     try:
         # Try to fetch the commit hash of classic environments
         commit_hash = environment_data.get("commit_hash")
@@ -187,6 +186,9 @@ def main():
         print("WARNING: unable to retrieve commit hash")
         commit_hash = None
 
+    additional_urls = environment_data.get("additional_urls", {})
+    shipyard_additional_urls_vars = [f'SHIPYARD_DOMAIN_{k.upper()}={v}' for (k,v) in additional_urls.items()]
+    
     # Write the data to the job's environment
     with open(bash_env_path, "a") as bash_env:
         bash_env.write(
@@ -199,7 +201,9 @@ def main():
                     "SHIPYARD_ENVIRONMENT_RETIRED={}".format(
                         environment_data["retired"]
                     ),
+                    "SHIPYARD_DOMAIN={}".format(environment_data["url"]),
                 ]
+                + shipyard_additional_urls_vars
                 + ["SHIPYARD_ENVIRONMENT_COMMIT_HASH={}".format(commit_hash)]
                 if commit_hash
                 else []
